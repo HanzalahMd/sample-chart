@@ -2,13 +2,11 @@ import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
 import {Grid, TextField} from "@mui/material";
 import ProficiencyDetails from "./ProficiencyDetails";
 
-const names = [
+const filters = [
     {
         name: 'higher',
         value: 'Evaluation > SOW'
@@ -23,43 +21,26 @@ const names = [
     }
 ];
 
-export default function FilterControl({vendorName}) {
-    const [evaluation, setEvaluation] = React.useState([
-        'higher',
-        'lower',
-        'equal'
-    ]);
-
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setEvaluation(
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
+export default function FilterControl({feeds}) {
+    const [filter, setFilter] = React.useState(filters[0].name);
 
     return (<>
     <Grid container justifyContent='flex-end'>
         <Grid item lg={2}>
-            <FormControl sx={{ m: 1, width: 200 }}>
+            <FormControl fullWidth style={{margin: '12px 0px'}}>
                 <InputLabel>Evaluation Filter</InputLabel>
                 <Select
-                    multiple
-                    value={evaluation}
-                    onChange={handleChange}
-                    renderValue={(selected) => selected.join(', ')}
+                    value={filter}
+                    label="Evaluation"
+                    onChange={e => setFilter(e.target.value)}
                 >
-                    {names.map((name) => (
-                        <MenuItem key={name.name} value={name.name}>
-                            <Checkbox checked={evaluation.indexOf(name.name) > -1} />
-                            <ListItemText primary={name.value} />
-                        </MenuItem>
-                    ))}
+                    <MenuItem value='higher'>{filters[0].value}</MenuItem>
+                    <MenuItem value='lower'>{filters[1].value}</MenuItem>
+                    <MenuItem value='equal'>{filters[2].value}</MenuItem>
                 </Select>
             </FormControl>
         </Grid>
     </Grid>
-         <ProficiencyDetails vendorName={vendorName} filters={evaluation} />
+         <ProficiencyDetails feeds={feeds} filter={filter} />
     </>);
 }

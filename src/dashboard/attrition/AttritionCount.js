@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,10 +9,8 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
 import {Grid} from "@mui/material";
-import dayjs from "dayjs";
-import DateFilter from "./DateFilter";
+import attritionData from "../../_mock/attritionData";
 
 ChartJS.register(
     CategoryScale,
@@ -22,8 +20,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-const filter = [];
 
 const AttritionCount = ({vendorName, range, dateFrom}) => {
     const options = {
@@ -52,18 +48,22 @@ const AttritionCount = ({vendorName, range, dateFrom}) => {
         return date.format("MMM YY")
     });
 
+    const filteredMonth = months.map(month => {
+        return attritionData.find(val => val.month === month)
+    })
+
     const data = {
         labels: months,
         datasets: [
             {
                 label: 'Total Headcount',
-                data: months.map(() => faker.datatype.number({ min: 30, max: 60 })),
+                data: filteredMonth.map(month => month.value.headcount),
                 backgroundColor: '#4dff88',
                 borderColor: '#009933'
             },
             {
-                label: 'AttritionCount Count',
-                data: months.map(() => faker.datatype.number({ min: -20, max: -1 })),
+                label: 'Attrition Count',
+                data: filteredMonth.map(month => month.value.attrition),
                 backgroundColor: '#ff6666',
                 borderColor: '#cc0000',
             },

@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { sample } from 'lodash';
 
-const resources = [...Array(72)].map((_, index) => ({
+const resources = [...Array(122)].map((_, index) => ({
     id: faker.datatype.uuid(),
     name: faker.name.fullName(),
-    vendor: sample(['HCL', 'Optimum', 'Azure', 'Zhulke', 'Accenture']),
-    program: sample(['DB', 'TMRW', 'CP', 'CEW', 'IDB']),
+    vendor: sample(['HCL', 'Optimum', 'Azure', 'Accenture']),
+    program: sample(['DB', 'TMRW', 'CP', 'IDB']),
     squad: faker.lorem.slug(),
     status: sample(['On-Boarded', 'Off-Boarded']),
     role: sample([
@@ -27,6 +27,7 @@ const resources = [...Array(72)].map((_, index) => ({
         'L5-Expert'
     ]),
     proficiencyEval: sample([
+        '',
         'L1-Beginner',
         'L2-Advanced Beginner',
         'L3-Competent',

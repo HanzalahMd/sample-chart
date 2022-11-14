@@ -1,19 +1,22 @@
 import {faker} from "@faker-js/faker";
+import dayjs from "dayjs";
 
-const attritionData = [
-    {
-        year: 2020,
-        totalHeadcount: [...Array(12)].map(() => faker.datatype.number({ min: 30, max: 60 })),
-        totalAttrition: [...Array(12)].map(() => faker.datatype.number({ min: -20, max: -1 }))
-    },
-    {
-        year: 2021,
-        totalHeadcount: [...Array(12)].map(() => faker.datatype.number({ min: 30, max: 60 })),
-        totalAttrition: [...Array(12)].map(() => faker.datatype.number({ min: -20, max: -1 }))
-    },
-    {
-        year: 2022,
-        totalHeadcount: [...Array(12)].map(() => faker.datatype.number({ min: 30, max: 60 })),
-        totalAttrition: [...Array(11)].map(() => faker.datatype.number({ min: -20, max: -1 }))
+const attritionData = [...Array(36)].map((_, index) => {
+    let date;
+    if(index < 12){
+        date = new Date(2020, index)
+    } else if (index < 24){
+        date = new Date(2021, index-12)
+    } else if (index < 36){
+        date = new Date(2022, index-24)
     }
-]
+    return {
+        month: dayjs(date).format('MMM YY'),
+        value: {
+            headcount: faker.datatype.number({ min: 30, max: 60 }),
+            attrition: faker.datatype.number({ min: -20, max: -1 })
+        }
+    }
+})
+
+export default attritionData;

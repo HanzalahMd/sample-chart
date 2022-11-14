@@ -2,7 +2,7 @@ import React from 'react';
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
 import {Bar} from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import DATA from "../../_mock/data";
+import {divideByPrograms} from "./util";
 
 ChartJS.register(
     CategoryScale,
@@ -14,9 +14,7 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const ProficiencyBar = ({vendorName}) => {
-    const feed = DATA.vendors.find(vendor => vendor.name === vendorName);
-
+const ProficiencyBar = ({feeds}) => {
     const options = {
         indexAxis: 'y',
         elements: {
@@ -39,7 +37,7 @@ const ProficiencyBar = ({vendorName}) => {
             },
             title: {
                 display: true,
-                text: `Proficiency Chart for ${vendorName}`,
+                text: `Proficiency Chart for ${feeds.vendor}`,
             },
             datalabels: {
                 color: 'black',
@@ -50,36 +48,36 @@ const ProficiencyBar = ({vendorName}) => {
                 anchor: 'center',
                 align: 'center',
                 font: {
-                    size: 17
+                    size: 14
                 }
             }
         },
     };
 
     const dataGraph = {
-        labels: feed.program.map(prg => prg.name),
+        labels: feeds.programs,
         datasets: [
             {
                 label: 'Assessed P > SOW P',
-                data: feed.program.map(prg => prg.assessedValue.high),
+                data: divideByPrograms(feeds, 'higher').map(grp => grp.length),
                 borderColor: '#009933',
                 backgroundColor: '#4dff88',
             },
             {
                 label: 'Assessed P < SOW P',
-                data: feed.program.map(prg => prg.assessedValue.low),
+                data: divideByPrograms(feeds, 'lower').map(grp => grp.length),
                 borderColor: '#cc0000',
                 backgroundColor: '#ff6666',
             },
             {
                 label: 'Assessed P = SOW P',
-                data: feed.program.map(prg => prg.assessedValue.equal),
+                data: divideByPrograms(feeds, 'equal').map(grp => grp.length),
                 borderColor: '#0099ff',
                 backgroundColor: '#80ccff',
             },
             {
                 label: 'New Staff',
-                data: feed.program.map(prg => prg.assessedValue.fresh),
+                data: divideByPrograms(feeds, 'newStaff').map(grp => grp.length),
                 borderColor: '#ff9900',
                 backgroundColor: '#ffcc80',
             },

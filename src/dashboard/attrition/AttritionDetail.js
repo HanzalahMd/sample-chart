@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import resources from "../../_mock/resource";
+import CustomToolbar from "../../components/toolbar/CustomToolbar";
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -9,7 +10,7 @@ const columns = [
     { field: 'name', headerName: 'Name', width: 180 },
     { field: 'status', headerName: 'Status', width: 180 },
     { field: 'offBoardedDate', headerName: 'Off-boarded Date', width: 280 },
-    { field: 'attritionReason', headerName: 'AttritionCount Reason', width: 280 },
+    { field: 'attritionReason', headerName: 'Attrition Reason', width: 280 },
 ];
 
 // eslint-disable-next-line react/prop-types
@@ -24,6 +25,7 @@ export default function AttritionDetail({vendorName}) {
                 pageSize={9}
                 rowsPerPageOptions={[9]}
                 autoHeight='true'
+                components={{ Toolbar: CustomToolbar }}
             />
         </div>
     );

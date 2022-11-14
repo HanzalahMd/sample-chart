@@ -1,66 +1,74 @@
 import React, {useState} from "react";
 import { Helmet } from 'react-helmet-async';
 // @mui
-import { Grid, Container, Typography, Tab, Tabs, Divider} from '@mui/material';
+import {Grid, Container, Typography, Tab, Tabs, Divider, Stack, Button} from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import exportMultipleChartsToPdf from '../components/download-button/DownloadButton'
+import {evaluate} from "../dashboard/proficiency/util";
+
 // sections
 import AttritionCount from "../dashboard/attrition/AttritionCount";
 import ProficiencyCount from "../dashboard/proficiency/ProficiencyCount";
 import FilterControl from "../dashboard/proficiency/FilterControl";
 import AttritionDetail from "../dashboard/attrition/AttritionDetail";
 import DateFilter from "../dashboard/attrition/DateFilter";
+import Iconify from "../components/iconify";
+import ProficiencyDetails from "../dashboard/proficiency/ProficiencyDetails";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
     const [value, setValue] = useState("proficiency-count");
-    const [vendor, setVendor] = useState('HCL');
+    const [vendor, setVendor] = useState('');
+    const feeds = evaluate(vendor);
+    console.log(feeds);
     // console.log(DATA)
 
     const changeDisplay = (event, newValue) => {
         setValue(newValue);
     };
 
-    const changeVendor = (event) => {
-        setVendor(event.target.value);
-    };
-
-    // eslint-disable-next-line consistent-return
     const view = () => {
-        if(value === "proficiency-count"){return <ProficiencyCount vendorName={vendor} />}
-        if(value === 'proficiency-details'){return <FilterControl vendorName={vendor} />}
+        if(value === "proficiency-count"){return <ProficiencyCount feeds={feeds} />}
+        if(value === 'proficiency-details'){return <FilterControl feeds={feeds} />}
         if(value === 'attrition-count'){return <DateFilter vendorName={vendor}/>}
         if(value === 'attrition-detail'){return <AttritionDetail vendorName={vendor} />}
+        return 'No Data';
     }
 
-    const menuItems = ['HCL', 'Optimum', 'Azure', 'Zhulke', 'Accenture'];
+    const menuItems = ["", 'HCL', 'Optimum', 'Azure', 'Accenture'];
 
     return (
     <>
       <Helmet>
-        <title> Dashboard | Partner Performance </title>
+        <title> Partner Performance </title>
       </Helmet>
 
       <Container maxWidth="xl">
           <Divider />
-          <div style={{marginTop: "16px"}}>
+          <Stack direction='row' justifyContent='space-between' alignItems='center' style={{marginTop: "16px"}}>
+          <div>
               <FormControl sx={{ m: 1, minWidth: 80 }}>
                   <InputLabel>Vendor</InputLabel>
                   <Select
                       value={vendor}
-                      onChange={changeVendor}
+                      onChange={(e) => setVendor(e.target.value)}
                       autoWidth
                       label="Vendor"
+                      style={{minWidth: '120px'}}
                   >
-                      {menuItems.map(menu => {
-                          return <MenuItem key={menuItems.indexOf(menu)} value={menu}>{menu}</MenuItem>
-                      })}
+                      {menuItems.map(menu => <MenuItem key={menuItems.indexOf(menu)} value={menu}>{menu}</MenuItem>)}
                   </Select>
               </FormControl>
           </div>
+              <div>
+                <Button onClick={exportMultipleChartsToPdf} variant="contained" startIcon={<Iconify icon="material-symbols:download-rounded" />}
+                >Export to PDF</Button>
+              </div>
+          </Stack>
 
            <Grid marginBottom='16px'>
               <Grid item lg={12}>
@@ -77,11 +85,26 @@ export default function DashboardAppPage() {
 
           <Divider />
 
-            <Grid marginBottom='16px'>
+           <Grid marginBottom='16px'>
               <Grid item lg={12}>
-                  {view()}
+                   {view()}
               </Grid>
-            </Grid>
+           </Grid>
+
+             {/* <Grid marginBottom='16px'> */}
+             {/* <Grid item lg={12} className='download-report' style={{marginTop: "32px", paddingBottom: "32px"}}> */}
+             {/*     /!* {view()} *!/ */}
+             {/*     <ProficiencyCount vendorName={vendor}/> */}
+             {/* </Grid> */}
+             {/*   <Grid item lg={12} style={{marginTop: "32px", paddingBottom: "32px"}} className='download-report'> */}
+             {/*       /!* {view()} *!/ */}
+             {/*       <FilterControl vendorName={vendor}/> */}
+             {/*   </Grid> */}
+             {/*   <Grid item lg={12} style={{marginTop: "32px", paddingBottom: "32px"}} className='download-report'> */}
+             {/*       /!* {view()} *!/ */}
+             {/*       <DateFilter vendorName={vendor}/> */}
+             {/*   </Grid> */}
+             {/* </Grid> */}
       </Container>
     </>
   );

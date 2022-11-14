@@ -4,16 +4,15 @@ import ProficiencyBar from "./ProficiencyBar";
 import ProficiencyDonut from "./ProficiencyDonut";
 
 // eslint-disable-next-line react/prop-types
-const ProficiencyCount = ({vendorName}) => {
-    return <Grid container spacing={3} marginTop='16px'>
-            <Grid item xs={12} md={6} lg={8}>
-                <ProficiencyBar vendorName={vendorName} />
-            </Grid>
+const ProficiencyCount = ({feeds}) =>
+    <Grid container spacing={4} marginTop='16px'>
+             <Grid item xs={12} lg={8}>
+                <ProficiencyBar feeds={feeds} />
+             </Grid>
 
-            <Grid item xs={12} md={6} lg={4}>
-                <ProficiencyDonut vendorName={vendorName} />
-            </Grid>
+             <Grid item xs={12} lg={4}>
+                <ProficiencyDonut feeds={feeds} />
+             </Grid>
     </Grid>
-}
 
 export default ProficiencyCount;

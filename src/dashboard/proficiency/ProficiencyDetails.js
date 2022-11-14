@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import resources from "../../_mock/resource";
+import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {Card} from "@mui/material";
+import CustomToolbar from "../../components/toolbar/CustomToolbar";
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -13,49 +14,21 @@ const columns = [
     { field: 'proficiencyEval', headerName: 'Evaluation', width: 180 },
 ];
 
-const getValue = (text) => {
-    const value = text.substring(1, 2);
-    return Number(value)
-}
-
 // eslint-disable-next-line react/prop-types
-export default function ProficiencyDetails({vendorName, filters}) {
-    const feeds = resources.filter(resource => resource.vendor === vendorName)
-
-    const higher = feeds.filter(feed => {
-        return getValue(feed.proficiencyEval) > getValue(feed.proficiencySOW)
-    })
-    const lower = feeds.filter(feed => {
-        return getValue(feed.proficiencyEval) < getValue(feed.proficiencySOW)
-    })
-    const equal = feeds.filter(feed => {
-        return getValue(feed.proficiencyEval) === getValue(feed.proficiencySOW)
-    })
-
-    const filter = () => {
-        const categories = {higher, lower, equal}
-        if (filters.length === 1){
-            return categories[filters[0]]
-        }
-        if (filters.length === 2){
-            return categories[filters[0]].concat(categories[filters[1]])
-        }
-        if (filters.length === 3){
-            return categories[filters[0]]
-                .concat(categories[filters[1]], categories[filters[2]])
-        }
-        return [];
-    }
+export default function ProficiencyDetails({feeds, filter}) {
+    const current = feeds[filter].filter(val => val.proficiencyEval !== '')
 
     return (
-        <div>
+        <Card>
             <DataGrid
-                rows={filter()}
+                style={{padding: '12px'}}
+                rows={current}
                 columns={columns}
                 pageSize={12}
                 rowsPerPageOptions={[12]}
                 autoHeight
+                components={{ Toolbar: CustomToolbar }}
             />
-        </div>
+        </Card>
     );
 }

@@ -1,35 +1,58 @@
 import React from 'react';
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js';
 import {Doughnut} from 'react-chartjs-2';
-import DATA from "../../_mock/data";
+import {eq} from "lodash/lang";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ProficiencyDonut = ({vendorName}) => {
-    const feed = DATA.vendors.find(vendor => vendor.name === vendorName);
+const ProficiencyDonut = ({feeds}) => {
 
-    const higher = feed.program.reduce((total, current) => {
-        return total + current.assessedValue.high
-    }, 0);
+    const options = {
+        plugins: {
+            legend: {
+                position: 'bottom'
+            },
+            title: {
+                display: false,
+                text: `Proficiency Chart for ${feeds.vendor}`,
+            },
+            datalabels: {
+                color: 'black',
+                display (context){
+                    const index = context.dataIndex;
+                    return context.dataset.data[index];
+                },
+                anchor: 'center',
+                align: 'center',
+                font: {
+                    size: 14
+                },
+                formatter: (value) => {
+                    return `${value} (${getPercentage(value)}%)`;
+                }
+            }
+        },
+    };
 
-    const lower = feed.program.reduce((total, current) => {
-        return total + current.assessedValue.low
-    }, 0);
+    const higher = feeds.higher.length;
+    const lower = feeds.lower.length;
+    const equal = feeds.equal.length;
+    const newStaff = feeds.newStaff.length;
 
-    const equal = feed.program.reduce((total, current) => {
-        return total + current.assessedValue.equal
-    }, 0);
+    const total = higher + lower + equal + newStaff;
 
-    const fresh = feed.program.reduce((total, current) => {
-        return total + current.assessedValue.fresh
-    }, 0);
+    const getPercentage = (value) => {
+        return Math.round((value/total) * 100);
+    }
 
     const dataGraph = {
         labels: ['Higher', 'Lower', 'Equal', 'New Staff'],
         datasets: [
             {
                 label: '# of Votes',
-                data: [higher, lower, equal, fresh],
+                data: [
+                    higher, lower, equal, newStaff
+                ],
                 backgroundColor: [
                     '#4dff88',
                     '#ff6666',
@@ -47,7 +70,7 @@ const ProficiencyDonut = ({vendorName}) => {
         ],
     };
 
-    return <Doughnut data={dataGraph} />;
+    return <Doughnut data={dataGraph} options={options}/>;
 }
 
 export default ProficiencyDonut;

@@ -1,0 +1,30 @@
+.MuiDataGrid-columnHeaderTitleContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.MuiInputBase-input, .MuiDataGrid-cellContent {
+    font-size: small;
+}
+
+.project-form-uobs {
+    background-color: #D2FDBB;
+}
+
+.project-form-uobm {
+    background-color: #FFA9A9;
+}
+
+.project-form-subheader {
+    display: flex;
+    justify-content: center;
+    padding: 7px;
+    background-color: aliceblue;
+    font-size: 15px;
+}
+
+.MuiDataGrid-cell.MuiDataGrid-cell--textLeft.MuiDataGrid-withBorder,
+.MuiDataGrid-cell.MuiDataGrid-cell--textLeft{
+    display: flex;
+    justify-content: center;
+}

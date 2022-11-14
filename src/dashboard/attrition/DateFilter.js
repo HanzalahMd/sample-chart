@@ -17,6 +17,9 @@ export default function DateFilter({vendorName}) {
         text: ''
     })
 
+    React.useEffect(() => {
+    }, [monthRange]);
+
     const changeDateFrom = (newValue) => {
         const diff = dateUntil.diff(newValue, 'month');
         if( diff < 12){
@@ -25,7 +28,6 @@ export default function DateFilter({vendorName}) {
            setValidationTo({error: false, text: ''})
         } else if (diff >= 12){
            setDateFrom(newValue);
-           setMonthRange(12);
            setValidationTo({error: true, text: 'Cannot be more than 11 months from start date'})
         }
     }
@@ -34,7 +36,6 @@ export default function DateFilter({vendorName}) {
         const diff = newValue.diff(dateFrom, 'month');
         if (diff >= 12){
             setDateUntil(newValue);
-            setMonthRange(12);
             setValidationTo({error: true, text: 'Cannot be more than 11 months from start date'})
         } else if( diff >= 0){
             setDateUntil(newValue);
@@ -52,6 +53,7 @@ export default function DateFilter({vendorName}) {
                 <Grid item lg={2}>
                     <DatePicker
                         views={['year', 'month']}
+                        openTo={'month'}
                         label="Start Date"
                         minDate={minDate}
                         maxDate={dateUntil}
@@ -64,6 +66,7 @@ export default function DateFilter({vendorName}) {
                 <Grid item lg={2}>
                     <DatePicker
                         views={['year', 'month']}
+                        openTo={'month'}
                         label="End Date"
                         minDate={minDate}
                         maxDate={dayjs()}

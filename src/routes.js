@@ -7,6 +7,8 @@ import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import DashboardAppPage from './pages/DashboardAppPage';
+import FormViewer from "./project/FormViewer";
+import ProjectForm from "./project/ProjectForm";
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +21,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
+        { path: 'project', element: <FormViewer /> },
       ],
     },
     {
