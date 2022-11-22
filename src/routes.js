@@ -3,37 +3,28 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-import UserPage from './pages/UserPage';
+import ProjectListPage from './pages/ProjectListPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import DashboardAppPage from './pages/DashboardAppPage';
-import FormViewer from "./project/FormViewer";
-import ProjectForm from "./project/ProjectForm";
+import WeeklyReport from "./project/WeeklyReport";
+import NewProjectForm from "./project/NewProjectForm";
+import ExportPage from './dashboard/proficiency/ExportPage'
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/dashboard',
+      path: '/',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'project', element: <FormViewer /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      element: <SimpleLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
+        { element: <Navigate to="/partner" />, index: true },
+        { path: 'partner', element: <DashboardAppPage /> },
+        { path: 'project', element: <ProjectListPage /> },
+        { path: 'new-project', element: <NewProjectForm /> },
+        { path: 'weekly-report', element: <WeeklyReport /> },
+        { path: 'download/:id', element: <ExportPage /> },
       ],
     },
     {

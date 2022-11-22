@@ -21,8 +21,9 @@ const projects = [...Array(12)].map((_, index) => ({
     approvalComm: faker.lorem.word(3).toUpperCase(),
     lastUpdatedBy: faker.name.firstName(),
     lastUpdatedDate: faker.date.between('2020-01-01T00:00:00.000Z', '2023-01-01T00:00:00.000Z').toLocaleDateString(),
-    approvalDate: faker.date.between('2020-01-01T00:00:00.000Z', '2023-01-01T00:00:00.000Z').toLocaleDateString(),
+    approvalDate: faker.date.between('2022-01-01T00:00:00.000Z', '2023-01-01T00:00:00.000Z').toLocaleDateString(),
     isVerified: faker.datatype.boolean(),
+    status: sample(['WIP', 'Completed', 'On-Hold'])
 }));
 
 export default projects;

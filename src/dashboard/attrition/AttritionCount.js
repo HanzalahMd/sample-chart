@@ -9,7 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import {Grid} from "@mui/material";
+import {Card, Grid} from "@mui/material";
 import attritionData from "../../_mock/attritionData";
 
 ChartJS.register(
@@ -70,11 +70,13 @@ const AttritionCount = ({vendorName, range, dateFrom}) => {
         ],
     };
     return (<>
+        <Card style={{padding: '12px', marginTop: '6px'}}>
         <Grid>
             <Grid>
                  <Bar options={options} data={data} />
             </Grid>
         </Grid>
+        </Card>
     </>)
 }
 

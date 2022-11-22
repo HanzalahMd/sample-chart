@@ -14,7 +14,7 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const ProficiencyBar = ({feeds}) => {
+const ProficiencyBar = ({feeds, filters}) => {
     const options = {
         indexAxis: 'y',
         elements: {
@@ -33,7 +33,7 @@ const ProficiencyBar = ({feeds}) => {
         },
         plugins: {
             legend: {
-                position: 'bottom'
+                position: 'bottom',
             },
             title: {
                 display: true,
@@ -54,34 +54,44 @@ const ProficiencyBar = ({feeds}) => {
         },
     };
 
+    const datasets = [
+        {
+            label: 'Assessed P > SOW P',
+            data: divideByPrograms(feeds, 'higher').map(grp => grp.length),
+            borderColor: '#009933',
+            backgroundColor: '#4dff88',
+        },
+        {
+            label: 'Assessed P < SOW P',
+            data: divideByPrograms(feeds, 'lower').map(grp => grp.length),
+            borderColor: '#cc0000',
+            backgroundColor: '#ff6666',
+        },
+        {
+            label: 'Assessed P = SOW P',
+            data: divideByPrograms(feeds, 'equal').map(grp => grp.length),
+            borderColor: '#0099ff',
+            backgroundColor: '#80ccff',
+        },
+        {
+            label: 'New Staff',
+            data: divideByPrograms(feeds, 'newStaff').map(grp => grp.length),
+            borderColor: '#ff9900',
+            backgroundColor: '#ffcc80',
+        },
+    ]
+
     const dataGraph = {
         labels: feeds.programs,
-        datasets: [
-            {
-                label: 'Assessed P > SOW P',
-                data: divideByPrograms(feeds, 'higher').map(grp => grp.length),
-                borderColor: '#009933',
-                backgroundColor: '#4dff88',
-            },
-            {
-                label: 'Assessed P < SOW P',
-                data: divideByPrograms(feeds, 'lower').map(grp => grp.length),
-                borderColor: '#cc0000',
-                backgroundColor: '#ff6666',
-            },
-            {
-                label: 'Assessed P = SOW P',
-                data: divideByPrograms(feeds, 'equal').map(grp => grp.length),
-                borderColor: '#0099ff',
-                backgroundColor: '#80ccff',
-            },
-            {
-                label: 'New Staff',
-                data: divideByPrograms(feeds, 'newStaff').map(grp => grp.length),
-                borderColor: '#ff9900',
-                backgroundColor: '#ffcc80',
-            },
-        ],
+        datasets: filters.map((current) => {
+            const array = {
+                Higher: datasets[0],
+                Lower: datasets[1],
+                Equal: datasets[2],
+                New: datasets[3],
+            }
+            return array[current];
+        })
     };
 
     return <Bar options={options} data={dataGraph} />;

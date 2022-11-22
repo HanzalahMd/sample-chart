@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 import {Card} from "@mui/material";
 import CustomToolbar from "../../components/toolbar/CustomToolbar";
 
@@ -28,6 +28,13 @@ export default function ProficiencyDetails({feeds, filter}) {
                 rowsPerPageOptions={[12]}
                 autoHeight
                 components={{ Toolbar: CustomToolbar }}
+                initialState={{
+                    columns: {
+                        columnVisibilityModel: {
+                            id: false,
+                        },
+                    },
+                }}
             />
         </Card>
     );

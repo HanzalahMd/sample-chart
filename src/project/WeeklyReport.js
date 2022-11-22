@@ -9,7 +9,7 @@ import DeliverableStatusTable from './components/DeliverableStatusTable';
 import './ProjectStyle.css'
 import RiskIssuesTable from "./components/RiskIssuesTable";
 
-export default function FormViewer() {
+export default function WeeklyReport() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
